@@ -70,31 +70,21 @@
 
     <h3>1 hours forecast: 2 days</h3>
     <HourlyGraph v-if="additionally" :hourlyData="hourlyData" />
-
-    <h3>3 hours forecast: 5 days (Chart)</h3>
-    <ForecastChart v-if="forecast" :data="forecast.list" />
-
-    <!-- <h3>Alerts</h3> -->
-    <!-- <Alerts v-if="additionally" :alerts="additionally.alerts" /> -->
   </v-container>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import HourlyGraph from "@/components/HourlyGraph.vue";
-import ForecastChart from "@/components/ForecastChart.vue";
 import Detail from "@/components/Detail.vue";
 import WeatherIcon from "@/components/WeatherIcon.vue";
-// import Alerts from "@/components/Alerts.vue";
 
 export default {
   name: "City",
 
   components: {
     HourlyGraph,
-    ForecastChart,
     Detail,
-    // Alerts,
     WeatherIcon,
     DailyWidget: () => import("./../components/DailyWidget.vue"),
   },
