@@ -1,0 +1,35 @@
+export const responseWeatherId = {
+  coord: { lon: 36.9467, lat: 50.3003 },
+  weather: [
+    {
+      id: 803,
+      main: "Clouds",
+      description: "облачно с прояснениями",
+      icon: "04d",
+    },
+  ],
+  base: "stations",
+  main: {
+    temp: 15.42,
+    feels_like: 15.03,
+    temp_min: 15,
+    temp_max: 16,
+    pressure: 1013,
+    humidity: 77,
+  },
+  visibility: 10000,
+  wind: { speed: 5, deg: 300 },
+  clouds: { all: 75 },
+  dt: 1619854097,
+  sys: {
+    type: 1,
+    id: 9030,
+    country: "UA",
+    sunrise: 1619834855,
+    sunset: 1619887851,
+  },
+  timezone: 10800,
+  id: 689304,
+  name: "Вовчанськ",
+  cod: 200,
+};

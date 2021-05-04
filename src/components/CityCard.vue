@@ -44,8 +44,6 @@
 </template>
 
 <script>
-// import { data } from "@/mock_data/response";
-import { formatDate } from "@/helpers/formatDate";
 import WeatherIcon from "./WeatherIcon.vue";
 export default {
   name: "CityCard",
@@ -57,16 +55,9 @@ export default {
   },
   components: { WeatherIcon },
   data() {
-    return {
-      // sunrise: formatDate(this.city.weather.sunrise),
-      // sunset: formatDate(this.city.weather.sunset),
-      // name: data.city.name,
-      // current: data.current,
-    };
+    return {};
   },
-  methods: {
-    formatDate,
-  },
+  methods: {},
 };
 </script>
 
