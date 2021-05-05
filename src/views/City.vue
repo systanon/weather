@@ -4,49 +4,46 @@
       <v-icon class="pr-2">mdi-arrow-left</v-icon>
       <span>City list</span>
     </v-btn>
-    <h2 class="text-center py-4">{{ forecast.city.name }}</h2>
+    <h2 v-if="forecast" class="text-center py-4">{{ forecast.city.name }}</h2>
 
     <v-row>
       <v-col cols="12" md="6">
-        <v-card-text v-if="forecast" class="">
-          <!-- <p class="">Город: {{ forecast.city.name }}</p> -->
-          <p class="">Восход: {{ forecast.city.sunrise | formatTime }}</p>
-          <p class="">Закат: {{ forecast.city.sunset | formatTime }}</p>
-        </v-card-text>
-        <v-simple-table dense>
-          <template v-slot:default>
-            <tbody>
-              <tr>
-                <td style="width: 40%">
-                  <p class="ma-0">
-                    {{ additionally.current.dt | formatDate }}
-                  </p>
-                </td>
-                <td style="width: 30%" class="">
-                  <WeatherIcon
-                    :icon="additionally.current.weather[0].icon"
-                    :big="true"
-                    class="position:absolute;"
-                  />
-                </td>
-                <td style="width: 20%">
-                  <p class="ma-0">
-                    {{ additionally.current.temp | round }}&ensp;<span
-                      >&#8451;</span
-                    >
-                  </p>
-                </td>
-                <td style="width: 30%">
-                  <p class="text-subtitle-2 ma-0">
-                    {{ additionally.current.weather[0].description }}
-                  </p>
-                </td>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
+        <v-card flat v-if="forecast && additionally">
+          <v-card
+            flat
+            class="d-flex justify-center justify-md-start align-center"
+          >
+            <div>
+              <p class="ma-0">
+                Sunset: {{ forecast.city.sunset | formatTime }}
+              </p>
+              <p class="ma-0">
+                Sunrise: {{ forecast.city.sunrise | formatTime }}
+              </p>
+            </div>
+
+            <div class="d-flex justify-start align-center pr-4">
+              <WeatherIcon
+                :icon="additionally.current.weather[0].icon"
+                :big="true"
+                :width="computedWidth"
+                :height="computedWidth"
+              />
+              <p class="ma-0 text-h5 text-md-h3">
+                {{ additionally.current.temp | round }}&ensp;<span
+                  >&#8451;</span
+                >
+              </p>
+            </div>
+
+            <p class="text-subtitle-2 ma-0">
+              {{ additionally.current.weather[0].description }}
+            </p>
+          </v-card>
+        </v-card>
         <Detail
           v-if="additionally"
+          class="mt-4"
           :rain="additionally.current.rain"
           :wind_deg="additionally.current.wind_deg"
           :wind_speed="additionally.current.wind_speed"
@@ -64,11 +61,10 @@
           :daily="additionally.daily"
           :height="408"
         />
-        <!-- :width="600" -->
       </v-col>
     </v-row>
 
-    <h3>1 hours forecast: 2 days</h3>
+    <h3>Hourly forecast</h3>
     <HourlyGraph v-if="additionally" :hourlyData="hourlyData" />
   </v-container>
 </template>
@@ -95,9 +91,19 @@ export default {
     ...mapState(["forecast", "additionally"]),
     hourlyData() {
       if (!this.additionally) return [];
-      return this.additionally.hourly.map((item) => Math.round(item.temp));
+      return this.additionally.hourly.map((item) => ({
+        temp: Math.round(item.temp),
+        date: item.dt,
+      }));
+    },
+    computedWidth() {
+      return this.$vuetify.breakpoint.name === "xs" ||
+        this.$vuetify.breakpoint.name === "sm"
+        ? "70px"
+        : "100px";
     },
   },
+  methods: {},
   created() {
     this.$store.dispatch("FORECAST", { id: this.$route.params.cityId });
   },

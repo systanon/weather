@@ -1,5 +1,11 @@
 <template>
-  <v-img :src="link" width="50" height="50" contain class="pa-0 ma-0" />
+  <v-img
+    :src="link"
+    :width="width"
+    :height="height"
+    contain
+    class="pa-0 ma-0"
+  />
 </template>
 
 <script>
@@ -14,6 +20,14 @@ export default {
     big: {
       type: Boolean,
       default: false,
+    },
+    width: {
+      type: String,
+      default: "50",
+    },
+    height: {
+      type: String,
+      default: "50",
     },
   },
   computed: {

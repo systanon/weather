@@ -4,6 +4,9 @@ import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
 import vuetify from "./plugins/vuetify";
+
+import ErrorMessage from "@/components/error.vue";
+
 import {
   degrees,
   upperCase,
@@ -22,6 +25,8 @@ Vue.filter("formatDate", formatDate);
 Vue.filter("windSpeed", windSpeed);
 Vue.filter("round", round);
 Vue.filter("windDegStr", windDegStr);
+
+Vue.component("error-message", ErrorMessage);
 
 new Vue({
   router,

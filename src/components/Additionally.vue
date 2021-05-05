@@ -113,7 +113,6 @@
 </template>
 
 <script>
-// import WeatherIcon from "./WeatherIcon.vue";
 import HourlyGraph from "@/components/HourlyGraph.vue";
 
 export default {
@@ -130,11 +129,7 @@ export default {
   },
   components: { HourlyGraph },
   data() {
-    return {
-      // sunrise: formatDate(data.current.sunrise),
-      // sunset: formatDate(data.current.sunset),
-      // name: data.city.name,
-    };
+    return {};
   },
   methods: {},
 };

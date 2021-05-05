@@ -1,7 +1,7 @@
 const defaultOptions = {
   appid: process.env.VUE_APP_APP_ID,
   units: "metric",
-  lang: "ru",
+  lang: "en",
 };
 
 // for fetch:

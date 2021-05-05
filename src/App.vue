@@ -7,6 +7,7 @@
     <v-main>
       <router-view />
     </v-main>
+    <error-message />
   </v-app>
 </template>
 

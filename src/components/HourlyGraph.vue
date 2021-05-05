@@ -1,7 +1,7 @@
 <template>
   <v-card
     v-mutate="updateWidth"
-    :height="height + heightItem"
+    :height="height + heightItem * 2"
     class="d-flex pa-0 ma-0"
     outlined
     tile
@@ -11,6 +11,12 @@
       :key="index"
       :style="`width: ${width}px`"
     >
+      <div
+        :style="`height:${heightItem}px; width: auto;`"
+        class="d-flex justify-center align-center"
+      >
+        {{ hourlyData[index].date | formatTime }}
+      </div>
       <div
         :style="`height: ${height * (1 - item.normalize)}px; width: auto;`"
       ></div>
@@ -44,12 +50,15 @@ export default {
   },
   computed: {
     items() {
-      return normalize(this.hourlyData, {
-        hotColor: "#ff0000",
-        hotLimit: 30,
-        coldColor: "#e0de79",
-        coldLimit: 10,
-      }).slice(0, this.count);
+      return normalize(
+        this.hourlyData.map((item) => item.temp),
+        {
+          hotColor: "#ff0000",
+          hotLimit: 30,
+          coldColor: "#e0de79",
+          coldLimit: 10,
+        }
+      ).slice(0, this.count);
     },
     width() {
       return this.clientWidth / this.count;

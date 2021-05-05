@@ -1,23 +1,22 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { geoFindMe } from "@/helpers/geoFindMe";
-import { responseForecastCoordinate } from "./../mock_data/response_forecast-coordinate";
-import { responseWeatherId } from "./../mock_data/response_weather-id";
-import { responseOneCallCoordinate } from "./../mock_data/response_onecall-coordinate";
 import { endpoints } from "../config/endpoints";
 import { objectToQueryString } from "./../helpers/objectToQueryString";
 import { storage } from "./../helpers/storage";
-import { cityList } from "./../mock_data/cityList";
 import api from "./../helpers/api";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    cityList: cityList, // [],
-    weather: [responseWeatherId], // [],
-    forecast: responseForecastCoordinate, // null,
-    additionally: responseOneCallCoordinate, // null,
+    cityList: [],
+    weather: [],
+    forecast: null,
+    additionally: null,
+    error: null,
+    errorMessage: "",
+    errorType: "",
   },
 
   mutations: {
@@ -60,6 +59,15 @@ export default new Vuex.Store({
       state.forecast = null;
       state.additionally = null;
     },
+    ERROR(state, payload) {
+      if (!payload) {
+        state.error = false;
+        state.errorMessage = "";
+      } else {
+        state.error = payload.error;
+        state.errorMessage = payload.errorMessage;
+      }
+    },
   },
 
   getters: {
@@ -83,29 +91,55 @@ export default new Vuex.Store({
         .catch((err) => console.error(err));
     },
     async WEATHER({ commit }, query) {
-      console.log(query);
       const queryStr = objectToQueryString(query);
-      const response = await api.get(`${endpoints.weather}?${queryStr}`);
-      if (response.statusText === "OK" && response.data?.cod === 200) {
-        const { id, name } = response.data;
-        commit("CITY", { id, name });
-        commit("WEATHER", response.data);
-      }
+      api
+        .get(`${endpoints.weather}?${queryStr}`)
+        .then((response) => {
+          if (response.statusText === "OK" && response.data?.cod === 200) {
+            const { id, name } = response.data;
+            commit("CITY", { id, name });
+            commit("WEATHER", response.data);
+          }
+        })
+        .catch((error) => {
+          commit("ERROR", {
+            error: true,
+            errorMessage: error.response.data.message,
+          });
+        });
     },
     async FORECAST({ commit, dispatch }, query) {
       const queryStr = objectToQueryString(query);
-      const response = await api.get(`${endpoints.forecast}?${queryStr}`);
-      if (response.statusText === "OK" && response.data?.cod === "200") {
-        commit("FORECAST", response.data);
-        dispatch("ADDITIONALLY", response.data.city.coord);
-      }
+      api
+        .get(`${endpoints.forecast}?${queryStr}`)
+        .then((response) => {
+          if (response.statusText === "OK" && response.data?.cod === "200") {
+            commit("FORECAST", response.data);
+            dispatch("ADDITIONALLY", response.data.city.coord);
+          }
+        })
+        .catch((error) => {
+          commit("ERROR", {
+            error: true,
+            errorMessage: error.response.data.message,
+          });
+        });
     },
     async ADDITIONALLY({ commit }, query) {
       const queryStr = objectToQueryString(query);
-      const response = await api.get(`${endpoints.onecall}?${queryStr}`);
-      if (response.statusText === "OK" && response.data) {
-        commit("ADDITIONALLY", response.data);
-      }
+      api
+        .get(`${endpoints.onecall}?${queryStr}`)
+        .then((response) => {
+          if (response.statusText === "OK" && response.data) {
+            commit("ADDITIONALLY", response.data);
+          }
+        })
+        .catch((error) => {
+          commit("ERROR", {
+            error: true,
+            errorMessage: error.response.data.message,
+          });
+        });
     },
     REMOVE_CITY({ commit }, id) {
       commit("REMOVE_CITY", id);

@@ -1,5 +1,4 @@
 <template>
-  <!-- :width="width" -->
   <v-card
     :width="width"
     :height="height"
@@ -9,7 +8,6 @@
     class="relative d-flex flex-row"
     style="overflow: hidden"
   >
-    <!-- :width="width" -->
     <v-card
       :width="width"
       :height="height"
@@ -53,8 +51,6 @@
         </template>
       </v-simple-table>
     </v-card>
-
-    <!-- :width="width" -->
     <v-card
       :width="width"
       :height="height"
@@ -71,13 +67,6 @@
         </v-card-actions>
 
         <v-card-title>{{ current.dt | formatDate }}</v-card-title>
-
-        <!-- <v-card-text>
-          <p class="">влажность: {{ current.humidity }}%</p>
-          <p class="">давление: {{ current.pressure }}mm</p>
-          <p class="">дождь: {{ current.rain }}%</p>
-          <p class="">ветер: {{ current.wind_speed }}m/sec.</p>
-        </v-card-text> -->
         <Detail
           :rain="current.rain"
           :wind_deg="current.wind_deg"
@@ -88,14 +77,119 @@
           :dew_point="current.dew_point"
           :wind_gust="current.wind_gust"
         />
+        <v-simple-table dense class="table-detail">
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th class="text-left"></th>
+                <th class="text-left">Morning</th>
+                <th class="text-left">Afternoon</th>
+                <th class="text-left">Evening</th>
+                <th class="text-left">Night</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <p class="ma-0 text-caption text--disabled">TEMPERATURE</p>
+                </td>
+                <td>
+                  <p class="ma-0">
+                    {{ current.temp.morn | round }}&ensp;<span>&#8451;</span>
+                  </p>
+                </td>
+                <td>
+                  <p class="ma-0">
+                    {{ current.temp.day | round }}&ensp;<span>&#8451;</span>
+                  </p>
+                </td>
+                <td>
+                  <p class="ma-0">
+                    {{ current.temp.eve | round }}&ensp;<span>&#8451;</span>
+                  </p>
+                </td>
+                <td>
+                  <p class="ma-0">
+                    {{ current.temp.night | round }}&ensp;<span>&#8451;</span>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p class="ma-0 text-caption text--disabled">FEELS LIKE</p>
+                </td>
+                <td>
+                  <p class="ma-0">
+                    {{ current.feels_like.morn | round }}&ensp;<span
+                      >&#8451;</span
+                    >
+                  </p>
+                </td>
+                <td>
+                  <p class="ma-0">
+                    {{ current.feels_like.day | round }}&ensp;<span
+                      >&#8451;</span
+                    >
+                  </p>
+                </td>
+                <td>
+                  <p class="ma-0">
+                    {{ current.feels_like.eve | round }}&ensp;<span
+                      >&#8451;</span
+                    >
+                  </p>
+                </td>
+                <td>
+                  <p class="ma-0">
+                    {{ current.feels_like.night | round }}&ensp;<span
+                      >&#8451;</span
+                    >
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+        <v-card flat :width="computedWidth">
+          <v-simple-table dense class="table-detail">
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th class="text-left text-caption" style="border: none">
+                    SUNRISE
+                  </th>
+                  <th class="text-left text-caption" style="border: none">
+                    SUNSET
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <p>
+                      {{ current.sunrise | formatTime }}&ensp;<span
+                        >&#8451;</span
+                      >
+                    </p>
+                  </td>
+                  <td>
+                    <p>
+                      {{ current.sunset | formatTime }}&ensp;<span
+                        >&#8451;</span
+                      >
+                    </p>
+                  </td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
+        </v-card>
       </v-card>
     </v-card>
   </v-card>
 </template>
 
 <script>
-// import { data } from "@/mock_data/response";
-// import { formatDate } from "@/helpers/formatDate";
 import WeatherIcon from "./WeatherIcon.vue";
 import Detail from "@/components/Detail.vue";
 
@@ -143,10 +237,14 @@ export default {
         return this.dt;
       },
     },
+    computedWidth() {
+      return this.$vuetify.breakpoint.name === "xs" ||
+        this.$vuetify.breakpoint.name === "sm"
+        ? "100%"
+        : "50%";
+    },
   },
-  methods: {
-    // formatDate,
-  },
+  methods: {},
 };
 </script>
 
@@ -173,5 +271,18 @@ export default {
 }
 .daily-hover:hover {
   background-color: #dfaa9d;
+}
+</style>
+<style lang="scss">
+.table-detail {
+  & th {
+    padding: 0 8px !important;
+  }
+  & td {
+    padding: 0 8px !important;
+    & p {
+      margin: 0;
+    }
+  }
 }
 </style>

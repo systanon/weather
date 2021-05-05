@@ -34,7 +34,7 @@
             ><v-icon> mdi-autorenew</v-icon></v-btn
           >
           <v-spacer />
-          <v-btn icon @click.stop="$emit('removeCity', item.id)"
+          <v-btn icon @click.stop="$emit('removeCity', city.id)"
             ><v-icon> mdi-delete</v-icon></v-btn
           >
         </v-card-actions>
