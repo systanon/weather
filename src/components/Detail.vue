@@ -22,19 +22,14 @@
         <span v-if="uvi !== undefined"> UV:&ensp;{{ uvi }} </span>
         &emsp;
         <span v-if="dew_point !== undefined">
-          Dew point:&ensp;{{ dew_point }}&ensp;<span>&#8451;</span>
+          Dew point:&ensp;{{ dew_point | round }}&ensp;<span>&#8451;</span>
         </span>
-        <!-- &emsp;
-        <span v-if="wind_gust !== undefined">
-          {{ wind_gust }}
-        </span> -->
       </p>
     </v-card-text>
   </v-card>
 </template>
 
 <script>
-// import WeatherIcon from "./WeatherIcon.vue";
 import WindIcon from "./WindIcon.vue";
 import RainIcon from "./RainIcon.vue";
 import PressureIcon from "./PressureIcon.vue";

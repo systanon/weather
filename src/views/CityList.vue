@@ -2,16 +2,18 @@
   <v-container>
     <h1 class="text-center text-h4 py-8">City list</h1>
 
-    <v-card flat class="d-flex" max-width="400">
-      <v-text-field
-        outlined
-        dense
-        v-model="cityName"
-        placeholder="enter the name of the city"
-        @keypress.enter="addCity"
-        append-icon="mdi-magnify"
-        @click:append="addCity"
-      />
+    <v-card flat class="d-flex justify-center">
+      <v-card flat max-width="400">
+        <v-text-field
+          outlined
+          dense
+          v-model="cityName"
+          placeholder="enter the name of the city"
+          @keypress.enter="addCity"
+          append-icon="mdi-magnify"
+          @click:append="addCity"
+        />
+      </v-card>
     </v-card>
     <div v-if="list.length" class="d-flex justify-center flex-wrap">
       <CityCard

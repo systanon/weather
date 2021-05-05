@@ -4,11 +4,13 @@
       <v-icon class="pr-2">mdi-arrow-left</v-icon>
       <span>City list</span>
     </v-btn>
-    <h2 v-if="forecast" class="text-center py-4">{{ forecast.city.name }}</h2>
 
     <v-row>
       <v-col cols="12" md="6">
         <v-card flat v-if="forecast && additionally">
+          <h2 class="text-center py-4">
+            {{ forecast.city.name }}
+          </h2>
           <v-card
             flat
             class="d-flex justify-center justify-md-start align-center"

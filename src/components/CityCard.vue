@@ -5,7 +5,7 @@
     class="ma-4"
     @click="$emit('goTo', city.id)"
   >
-    <v-card-title class="justify-center">{{ city.name }}</v-card-title>
+    <h2 class="text-center text-truncate pa-4">{{ city.name }}</h2>
     <div v-if="city.weather">
       <div class="d-flex">
         <WeatherIcon :icon="city.weather.weather[0].icon" />
